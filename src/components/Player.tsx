@@ -1,63 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Shuffle, Repeat, Heart, List } from 'lucide-react';
+import React from 'react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Shuffle, Repeat, Heart, List, Loader } from 'lucide-react';
 import { Track } from '../types/music';
 
 interface PlayerProps {
   currentTrack: Track | null;
   isPlaying: boolean;
+  isLoading: boolean;
+  currentTime: number;
+  duration: number;
+  volume: number;
   onPlay: () => void;
   onPause: () => void;
   onNext: () => void;
   onPrevious: () => void;
-  queue: Track[];
+  onSeek: (time: number) => void;
+  onVolumeChange: (volume: number) => void;
   onShowQueue: () => void;
 }
 
 const Player: React.FC<PlayerProps> = ({
   currentTrack,
   isPlaying,
+  isLoading,
+  currentTime,
+  duration,
+  volume,
   onPlay,
   onPause,
   onNext,
   onPrevious,
-  queue,
+  onSeek,
+  onVolumeChange,
   onShowQueue
 }) => {
-  const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolume] = useState(70);
-  const [isLiked, setIsLiked] = useState(false);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying && currentTrack) {
-      interval = setInterval(() => {
-        setCurrentTime(prev => {
-          if (prev >= currentTrack.duration) {
-            onNext();
-            return 0;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTrack, onNext]);
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = parseInt(e.target.value);
-    setCurrentTime(newTime);
+    const newTime = parseFloat(e.target.value);
+    onSeek(newTime);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseInt(e.target.value);
+    onVolumeChange(newVolume);
   };
 
   if (!currentTrack) {
     return (
       <div className="h-24 bg-black bg-opacity-95 backdrop-blur-sm border-t border-gray-800 flex items-center justify-center">
-        <p className="text-gray-500">No track selected</p>
+        <p className="text-gray-500">Select a track to start playing</p>
       </div>
     );
   }
@@ -66,22 +61,24 @@ const Player: React.FC<PlayerProps> = ({
     <div className="h-24 bg-black bg-opacity-95 backdrop-blur-sm border-t border-gray-800 px-6 flex items-center justify-between">
       {/* Track Info */}
       <div className="flex items-center gap-4 min-w-0 flex-1">
-        <img
-          src={currentTrack.cover}
-          alt={currentTrack.title}
-          className="w-14 h-14 rounded-lg object-cover"
-        />
+        <div className="relative">
+          <img
+            src={currentTrack.thumbnail}
+            alt={currentTrack.title}
+            className="w-14 h-14 rounded-lg object-cover"
+          />
+          {isLoading && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center">
+              <Loader className="w-6 h-6 text-white animate-spin" />
+            </div>
+          )}
+        </div>
         <div className="min-w-0">
           <h3 className="text-white font-medium truncate">{currentTrack.title}</h3>
           <p className="text-gray-400 text-sm truncate">{currentTrack.artist}</p>
         </div>
-        <button
-          onClick={() => setIsLiked(!isLiked)}
-          className={`ml-2 transition-colors ${
-            isLiked ? 'text-red-500' : 'text-gray-400 hover:text-white'
-          }`}
-        >
-          <Heart className="w-5 h-5" fill={isLiked ? 'currentColor' : 'none'} />
+        <button className="text-gray-400 hover:text-red-500 transition-colors ml-2">
+          <Heart className="w-5 h-5" />
         </button>
       </div>
 
@@ -99,9 +96,16 @@ const Player: React.FC<PlayerProps> = ({
           </button>
           <button
             onClick={isPlaying ? onPause : onPlay}
-            className="bg-white hover:bg-gray-200 text-black p-2 rounded-full transition-all duration-200 hover:scale-105"
+            disabled={isLoading}
+            className="bg-white hover:bg-gray-200 text-black p-2 rounded-full transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
+            {isLoading ? (
+              <Loader className="w-6 h-6 animate-spin" />
+            ) : isPlaying ? (
+              <Pause className="w-6 h-6" />
+            ) : (
+              <Play className="w-6 h-6 ml-1" />
+            )}
           </button>
           <button
             onClick={onNext}
@@ -123,14 +127,18 @@ const Player: React.FC<PlayerProps> = ({
             <input
               type="range"
               min="0"
-              max={currentTrack.duration}
+              max={duration || 100}
               value={currentTime}
               onChange={handleSeek}
               className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
             />
+            <div
+              className="absolute top-0 left-0 h-1 bg-purple-500 rounded-lg pointer-events-none"
+              style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+            />
           </div>
           <span className="text-xs text-gray-400 min-w-[40px]">
-            {formatTime(currentTrack.duration)}
+            {formatTime(duration)}
           </span>
         </div>
       </div>
@@ -150,7 +158,7 @@ const Player: React.FC<PlayerProps> = ({
             min="0"
             max="100"
             value={volume}
-            onChange={(e) => setVolume(parseInt(e.target.value))}
+            onChange={handleVolumeChange}
             className="w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
           />
         </div>

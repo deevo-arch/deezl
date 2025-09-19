@@ -2,28 +2,30 @@ export interface Track {
   id: string;
   title: string;
   artist: string;
-  album: string;
+  album?: string;
   duration: number;
-  cover: string;
-  url: string;
-  genre: string;
+  thumbnail: string;
+  url?: string;
+  genre?: string;
+  viewCount?: string;
+  publishedAt?: string;
 }
 
 export interface Album {
   id: string;
   title: string;
   artist: string;
-  cover: string;
+  thumbnail: string;
   tracks: Track[];
-  year: number;
-  genre: string;
+  year?: number;
+  genre?: string;
 }
 
 export interface Playlist {
   id: string;
   name: string;
   tracks: Track[];
-  cover: string;
+  thumbnail: string;
   description: string;
 }
 
@@ -35,4 +37,12 @@ export interface PlayerState {
   volume: number;
   queue: Track[];
   currentIndex: number;
+  isLoading: boolean;
+}
+
+export interface SearchState {
+  query: string;
+  results: Track[];
+  isSearching: boolean;
+  trending: Track[];
 }
