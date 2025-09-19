@@ -102,8 +102,8 @@ function App() {
               <SearchBar onTrackSelect={handleTrackSelect} />
               
               <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-bold">
-                  U
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-cyan-500 flex items-center justify-center text-white text-sm font-bold">
+                  D
                 </div>
               </div>
             </div>
@@ -123,12 +123,12 @@ function App() {
           {activeView === 'search' && (
             <div className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-blue-900 p-8">
               <h1 className="text-4xl font-bold text-white mb-8">Search</h1>
-              <p className="text-gray-400 mb-8">Use the search bar above to find your favorite music from YouTube</p>
+              <p className="text-gray-400 mb-8">Find your favorite music</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {['Pop', 'Rock', 'Hip Hop', 'Electronic', 'Jazz', 'Classical', 'Country', 'R&B'].map((genre) => (
                   <div
                     key={genre}
-                    className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform"
+                    className="bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform"
                   >
                     <h3 className="text-white font-bold text-lg">{genre}</h3>
                   </div>

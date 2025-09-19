@@ -89,7 +89,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onTrackSelect }) => {
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
         <input
           type="text"
-          placeholder="Search for songs, artists, albums..."
+          placeholder="What do you want to listen to?"
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value);
@@ -118,7 +118,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onTrackSelect }) => {
             {isSearching ? (
               <div className="flex items-center justify-center p-6">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
-                <span className="ml-3 text-gray-400">Searching YouTube...</span>
+                <span className="ml-3 text-gray-400">Searching...</span>
               </div>
             ) : (
               <>

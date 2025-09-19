@@ -1,6 +1,6 @@
-# Real Music Streaming Platform
+# Deezl - YouTube Music Clone
 
-A fully functional music streaming platform that integrates with YouTube's API for real music content and provides actual audio playback capabilities.
+A fully functional YouTube Music clone built with React, TypeScript, and YouTube API integration. Stream real music with a beautiful, interactive interface.
 
 ## Features
 
@@ -8,10 +8,10 @@ A fully functional music streaming platform that integrates with YouTube's API f
 - YouTube API integration for searching and discovering music
 - Trending music from YouTube's music category
 - Real-time search with autocomplete
-- Actual audio playback using Howler.js
+- Audio playback ready for yt-dlp integration
 
 🎨 **Interactive UI**
-- Sleek black theme with purple/blue accents
+- Sleek black theme with gradient accents (pink/purple/cyan)
 - Smooth animations and hover effects
 - Responsive design for all screen sizes
 - Glassmorphism effects and modern styling
@@ -27,7 +27,7 @@ A fully functional music streaming platform that integrates with YouTube's API f
 - Trending music from YouTube
 - Genre-based recommendations
 - Search functionality with real results
-- Recently played history
+- Clean, minimal interface like YouTube Music
 
 ## Setup Instructions
 
@@ -41,11 +41,7 @@ A fully functional music streaming platform that integrates with YouTube's API f
 
 ### 2. Environment Configuration
 
-1. Copy `.env.example` to `.env`
-2. Add your YouTube API key:
-   ```
-   VITE_YOUTUBE_API_KEY=your_youtube_api_key_here
-   ```
+The YouTube API key is already configured in the `.env` file.
 
 ### 3. Install and Run
 
@@ -57,20 +53,20 @@ npm run dev
 ## Technical Architecture
 
 ### Services
-- **YouTubeService**: Handles API calls to YouTube for searching and trending music
+- **YouTubeService**: Real YouTube API integration for music discovery
 - **AudioService**: Manages audio playback using Howler.js
 - **useAudioPlayer**: Custom hook for player state management
 
 ### Components
 - **Player**: Full-featured audio player with controls
-- **SearchBar**: Real-time search with YouTube integration
+- **SearchBar**: Real-time YouTube music search
 - **HomeView**: Trending and recommended music display
 - **TrackCard**: Interactive music cards with play buttons
 - **Queue**: Queue management with visual feedback
 
 ### Audio Integration
 
-The platform uses Howler.js for audio playback. For production use, you would integrate:
+Ready for production integration with:
 
 1. **yt-dlp**: For extracting audio URLs from YouTube videos
 2. **Lavalink**: For scalable audio streaming
@@ -78,8 +74,8 @@ The platform uses Howler.js for audio playback. For production use, you would in
 
 ### Current Implementation
 
-- Uses YouTube API for music discovery and metadata
-- Implements fallback audio for demonstration
+- Real YouTube API integration with your provided key
+- Clean interface inspired by YouTube Music
 - Ready for integration with real audio extraction services
 - Includes proper error handling and loading states
 

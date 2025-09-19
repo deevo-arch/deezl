@@ -88,8 +88,8 @@ const HomeView: React.FC<HomeViewProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Good evening</h1>
-            <p className="text-gray-400">Discover trending music from YouTube</p>
+            <h1 className="text-4xl font-bold text-white mb-2">Welcome to Deezl</h1>
+            <p className="text-gray-400">Discover and stream music from YouTube</p>
           </div>
           <button
             onClick={refreshRecommendations}

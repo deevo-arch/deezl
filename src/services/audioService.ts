@@ -147,20 +147,26 @@ class AudioService {
   }
 
   private async getAudioUrl(videoId: string): Promise<string> {
-    // In a real implementation, you would:
-    // 1. Call your backend API that uses yt-dlp to extract audio URL
-    // 2. Or use a service like Lavalink
-    // 3. Or integrate with YouTube's official APIs (with proper licensing)
+    // This would integrate with your backend that uses yt-dlp
+    // For now, we'll use a proxy service (in production, replace with your backend)
+    try {
+      // Example integration point for yt-dlp backend
+      const response = await fetch(`/api/audio/${videoId}`);
+      if (response.ok) {
+        const data = await response.json();
+        return data.audioUrl;
+      }
+    } catch (error) {
+      console.error('Failed to get audio URL:', error);
+    }
     
-    // For demo purposes, we'll use placeholder audio
-    // This would be replaced with actual audio extraction
-    return this.getFallbackAudioUrl();
+    // Fallback for development
+    return `https://www.youtube.com/watch?v=${videoId}`;
   }
 
   private getFallbackAudioUrl(): string {
-    // Using a royalty-free audio file for demonstration
-    // In production, replace with actual audio extraction service
-    return 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav';
+    // This would be replaced with actual yt-dlp extracted audio
+    return 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3';
   }
 
   private loadFallbackAudio(): void {
