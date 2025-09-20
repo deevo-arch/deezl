@@ -147,10 +147,23 @@ class AudioService {
   }
 
   private async getAudioUrl(videoId: string): Promise<string> {
-    // TODO: Integrate with yt-dlp backend for actual audio extraction
-    console.warn('Using fallback audio - yt-dlp backend not implemented yet');
-    console.log(`Would extract audio for video ID: ${videoId}`);
-    return this.getFallbackAudioUrl();
+    try {
+      const response = await fetch(`http://localhost:3001/api/audio/${videoId}`);
+      const data = await response.json();
+      
+      if (data.success && data.audioUrl) {
+        console.log(`Got audio URL for ${videoId}:`, data.cached ? '(cached)' : '(fresh)');
+        return data.audioUrl;
+      } else {
+        console.error('Failed to get audio URL:', data.error);
+        throw new Error(data.error || 'Failed to get audio URL');
+      }
+    } catch (error) {
+      console.error('Audio URL fetch error:', error);
+      // Fallback to demo audio if backend is not available
+      console.warn('Falling back to demo audio');
+      return this.getFallbackAudioUrl();
+    }
   }
 
   private getFallbackAudioUrl(): string {
