@@ -1,6 +1,6 @@
-# Deezl - YouTube Music Clone
+# Deezl - A Sizzle Music Platform
 
-A fully functional YouTube Music clone built with React, TypeScript, and YouTube API integration. Stream real music with a beautiful, interactive interface.
+A fully functional Sizzle Music Platform by Deevo built with React, TypeScript, and YouTube API integration. Stream real music with a beautiful, interactive interface.
 
 ## Features
 
@@ -8,7 +8,7 @@ A fully functional YouTube Music clone built with React, TypeScript, and YouTube
 - YouTube API integration for searching and discovering music
 - Trending music from YouTube's music category
 - Real-time search with autocomplete
-- Audio playback ready for yt-dlp integration
+- Audio playback ready
 
 🎨 **Interactive UI**
 - Sleek black theme with gradient accents (pink/purple/cyan)
